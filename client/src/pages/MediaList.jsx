@@ -3,15 +3,15 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import tmdbConfigs from "../api/configs/tmdb.configs";
 import mediaApi from "../api/modules/media.api";
 import uiConfigs from "../configs/ui.configs";
+import usePrevious from "../hooks/usePrevious";
 import HeroSlide from "../components/common/HeroSlide";
 import MediaGrid from "../components/common/MediaGrid";
 import { setAppState } from "../redux/features/appStateSlice";
 import { setGlobalLoading } from "../redux/features/globalLoadingSlice";
-import { toast } from "react-toastify";
-import usePrevious from "../hooks/usePrevious";
 
 const MediaList = () => {
   const { mediaType } = useParams();
@@ -30,7 +30,7 @@ const MediaList = () => {
   useEffect(() => {
     dispatch(setAppState(mediaType));
     window.scrollTo(0, 0);
-  }, [mediaType, dispatch]);
+  }, [dispatch, mediaType]);
 
   useEffect(() => {
     const getMedias = async () => {
@@ -40,7 +40,7 @@ const MediaList = () => {
       const { response, err } = await mediaApi.getList({
         mediaType,
         mediaCategory: mediaCategories[currCategory],
-        page: currPage
+        page: currPage,
       });
 
       setMediaLoading(false);
@@ -48,11 +48,10 @@ const MediaList = () => {
 
       if (err) toast.error(err.message);
       if (response) {
-        if (currPage !== 1) setMedias(m => [...m, ...response.results]);
+        if (currPage !== 1) setMedias((m) => [...m, ...response.results]);
         else setMedias([...response.results]);
       }
     };
-
     if (mediaType !== prevMediaType) {
       setCurrCategory(0);
       setCurrPage(1);
@@ -60,12 +59,12 @@ const MediaList = () => {
 
     getMedias();
   }, [
-    mediaType,
     currCategory,
-    prevMediaType,
     currPage,
+    dispatch,
     mediaCategories,
-    dispatch
+    mediaType,
+    prevMediaType,
   ]);
 
   const onCategoryChange = (categoryIndex) => {
@@ -79,7 +78,10 @@ const MediaList = () => {
 
   return (
     <>
-      <HeroSlide mediaType={mediaType} mediaCategory={mediaCategories[currCategory]} />
+      <HeroSlide
+        mediaType={mediaType}
+        mediaCategory={mediaCategories[currCategory]}
+      />
       <Box sx={{ ...uiConfigs.style.mainContent }}>
         <Stack
           spacing={2}
@@ -98,7 +100,10 @@ const MediaList = () => {
                 size="large"
                 variant={currCategory === index ? "contained" : "text"}
                 sx={{
-                  color: currCategory === index ? "primary.contrastText" : "text.primary"
+                  color:
+                    currCategory === index
+                      ? "primary.contrastText"
+                      : "text.primary",
                 }}
                 onClick={() => onCategoryChange(index)}
               >
@@ -107,10 +112,7 @@ const MediaList = () => {
             ))}
           </Stack>
         </Stack>
-        <MediaGrid
-          medias={medias}
-          mediaType={mediaType}
-        />
+        <MediaGrid medias={medias} mediaType={mediaType} />
         <LoadingButton
           sx={{ marginTop: 8 }}
           fullWidth
