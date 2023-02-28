@@ -37,7 +37,7 @@ const PersonDetail = () => {
             <Box
               sx={{
                 position: "relative",
-                dispaly: "flex",
+                display: "flex",
                 flexDirection: { xs: "column", md: "row" },
               }}
             >
