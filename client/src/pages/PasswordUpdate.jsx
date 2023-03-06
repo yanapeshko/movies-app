@@ -2,13 +2,13 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Container from "../components/common/Container";
-import uiConfigs from "../configs/ui.configs";
-import { useState } from "react";
-import userApi from "../api/modules/user.api";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import Container from "../components/common/Container";
+import uiConfigs from "../configs/ui.configs";
+import userApi from "../api/modules/user.api";
 import { setUser } from "../redux/features/userSlice";
 import { setAuthModalOpen } from "../redux/features/authModalSlice";
 
@@ -22,7 +22,7 @@ const PasswordUpdate = () => {
     initialValues: {
       password: "",
       newPassword: "",
-      confirmNewPassword: ""
+      confirmNewPassword: "",
     },
     validationSchema: Yup.object({
       password: Yup.string()
@@ -34,9 +34,9 @@ const PasswordUpdate = () => {
       confirmNewPassword: Yup.string()
         .oneOf([Yup.ref("newPassword")], "confirmNewPassword not match")
         .min(8, "confirmNewPassword minimum 8 characters")
-        .required("confirmNewPassword is required")
+        .required("confirmNewPassword is required"),
     }),
-    onSubmit: async values => onUpdate(values)
+    onSubmit: async (values) => onUpdate(values),
   });
 
   const onUpdate = async (values) => {
@@ -70,7 +70,9 @@ const PasswordUpdate = () => {
               value={form.values.password}
               onChange={form.handleChange}
               color="success"
-              error={form.touched.password && form.errors.password !== undefined}
+              error={
+                form.touched.password && form.errors.password !== undefined
+              }
               helperText={form.touched.password && form.errors.password}
             />
             <TextField
@@ -81,7 +83,10 @@ const PasswordUpdate = () => {
               value={form.values.newPassword}
               onChange={form.handleChange}
               color="success"
-              error={form.touched.newPassword && form.errors.newPassword !== undefined}
+              error={
+                form.touched.newPassword &&
+                form.errors.newPassword !== undefined
+              }
               helperText={form.touched.newPassword && form.errors.newPassword}
             />
             <TextField
@@ -92,10 +97,15 @@ const PasswordUpdate = () => {
               value={form.values.confirmNewPassword}
               onChange={form.handleChange}
               color="success"
-              error={form.touched.confirmNewPassword && form.errors.confirmNewPassword !== undefined}
-              helperText={form.touched.confirmNewPassword && form.errors.confirmNewPassword}
+              error={
+                form.touched.confirmNewPassword &&
+                form.errors.confirmNewPassword !== undefined
+              }
+              helperText={
+                form.touched.confirmNewPassword &&
+                form.errors.confirmNewPassword
+              }
             />
-
             <LoadingButton
               type="submit"
               variant="contained"
