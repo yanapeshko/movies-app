@@ -1,7 +1,7 @@
 Movie App
 The Movie App is a web application that allows users to browse and search for movies. It provides a user-friendly interface to discover information about movies, including their titles, release dates, genres, and summaries. Users can also view movie details, such as cast members, ratings, and reviews.
 
-![Screenshot 1](./public/screenshot1.png)
+![Screenshot 1](./client/public/screenshot1.png) ![Screenshot 2](./client/public/screenshot2.png) ![Screenshot 3](./client/public/screenshot3.png) ![Screenshot 4](./client/public/screenshot4.png) ![Screenshot 5](./client/public/screenshot5.png) ![Screenshot](./client/public/screenshot.png)
 
 Features
 Browse Movies: Explore a vast collection of movies with the ability to view their details.
